@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-import { LOGIN } from './actions/types';
+import { login as loginAction } from './actions';
 
 class Login extends Component {
   state = {
@@ -80,7 +80,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (user) => dispatch({ type: LOGIN, payload: user }),
+    login: (user) => dispatch(loginAction(user)),
   };
 };
 

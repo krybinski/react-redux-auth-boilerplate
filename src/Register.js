@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-import { REGISTER } from './actions/types';
+import { register as registerAction } from './actions';
 
 class Register extends Component {
   state = {
@@ -103,7 +103,7 @@ class Register extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    register: (user) => dispatch({ type: REGISTER, payload: user }),
+    register: (user) => dispatch(registerAction(user)),
   };
 };
 

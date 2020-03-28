@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-import { LOGOUT } from '../actions/types';
+import { logout as logoutAction } from '../actions';
 
 const Layout = (props) => {
   const handleLogout = (ev) => {
@@ -66,7 +66,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch({ type: LOGOUT }),
+    logout: () => dispatch(logoutAction()),
   };
 };
 
