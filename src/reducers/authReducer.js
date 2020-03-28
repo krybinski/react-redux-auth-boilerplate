@@ -1,4 +1,4 @@
-import { LOGIN, REGISTER, LOGOUT } from '../actions/types';
+import { LOGIN, REGISTER, LOGOUT } from 'actions/types';
 
 const INITIAL_STATE = {
   loggedIn: false,

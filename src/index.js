@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import axios from 'axios';
 import cookie from 'js-cookie';
 import jwt from 'jsonwebtoken';
-import App from './App';
-import store from './store';
-import { LOGIN } from './actions/types';
+import Root from 'views/Root';
+import store from 'store';
+import { login as loginAction } from 'actions';
 
-import './index.css';
+import 'index.css';
 
 const jwtSecret =
   '4yV9MNxBhFuSLsV7vp5fTMjZiVl0OWKObbaZcXwuGO2TE46Ix707Mys1VocU67Ya';
@@ -32,20 +31,13 @@ if (token) {
 }
 
 const render = () => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Provider>,
-    document.getElementById('root'),
-  );
+  ReactDOM.render(<Root />, document.getElementById('root'));
 };
 
 if (token) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   axios.post('http://laravel-auth.local/api/auth/me').then((res) => {
-    store.dispatch({ type: LOGIN, payload: res.data });
+    store.dispatch(loginAction(res.data));
     render();
   });
 } else {

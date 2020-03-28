@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-import { register as registerAction } from './actions';
+import { register as registerAction } from 'actions';
 
 class Register extends Component {
   state = {

@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-import { logout as logoutAction } from '../actions';
+import { logout as logoutAction } from 'actions';
 
-const Layout = (props) => {
+const MainLayout = (props) => {
   const handleLogout = (ev) => {
     ev.preventDefault();
 
@@ -70,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default connect(mapStateToProps, mapDispatchToProps)(MainLayout);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import cookie from 'js-cookie';
-import { login as loginAction } from './actions';
+import { login as loginAction } from 'actions';
 
 class Login extends Component {
   state = {

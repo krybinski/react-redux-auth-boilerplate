@@ -1,4 +1,4 @@
-import { LOGIN, REGISTER, LOGOUT } from './types';
+import { LOGIN, REGISTER, LOGOUT } from 'actions/types';
 
 export const login = (user) => {
   return {
