@@ -37,6 +37,7 @@ const Login = (props) => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
 
+    setErrors({});
     setLoading(true);
 
     const data = { email, password };
@@ -48,7 +49,7 @@ const Login = (props) => {
         setLoading(false);
         cookie.set('token', access_token);
         props.login(user);
-        props.history.push(routes.profile);
+        props.history.push(routes.dashboard);
       })
       .catch((err) => {
         setLoading(false);

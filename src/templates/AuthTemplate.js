@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import bgImage from 'assets/images/bg-auth.jpg';
-import Copyright from 'components/copyright/Copyright';
+import Copyright from 'components/Copyright/Copyright';
 
 const useStyles = makeStyles((theme) => ({
   root: {

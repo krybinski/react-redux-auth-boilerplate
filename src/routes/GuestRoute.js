@@ -13,7 +13,7 @@ const GuestRoute = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: routes.profile,
+              pathname: routes.dashboard,
               state: { from: props.location },
             }}
           />

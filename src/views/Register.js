@@ -39,6 +39,7 @@ const Register = (props) => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
 
+    setErrors({});
     setLoading(true);
 
     const data = { name, email, password, password_confirmation };
@@ -50,7 +51,7 @@ const Register = (props) => {
         setLoading(false);
         cookie.set('token', access_token);
         props.register(user);
-        props.history.push(routes.profile);
+        props.history.push(routes.dashboard);
       })
       .catch((err) => {
         setLoading(false);

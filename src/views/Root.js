@@ -2,13 +2,14 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import store from 'store';
+import routes from 'routes';
 import GuestRoute from 'routes/GuestRoute';
 import AuthRoute from 'routes/AuthRoute';
-import Login from 'views/Login';
-import Profile from 'views/Profile';
-import Register from 'views/Register';
 import MainTemplate from 'templates/MainTemplate';
-import routes from 'routes';
+import Login from 'views/Login';
+import Register from 'views/Register';
+import Profile from 'views/Profile';
+import Dashboard from 'views/Dashboard';
 
 const Routing = () => (
   <Switch>
@@ -19,6 +20,8 @@ const Routing = () => (
     />
     <GuestRoute path={routes.login} component={Login} />
     <GuestRoute path={routes.register} component={Register} />
+
+    <AuthRoute path={routes.dashboard} component={Dashboard} />
     <AuthRoute path={routes.profile} component={Profile} />
   </Switch>
 );
