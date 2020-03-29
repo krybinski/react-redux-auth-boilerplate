@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import routes from 'routes';
 
 const GuestRoute = ({ component: Component, ...rest }) => {
   return (
@@ -12,7 +13,7 @@ const GuestRoute = ({ component: Component, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: '/profile',
+              pathname: routes.profile,
               state: { from: props.location },
             }}
           />

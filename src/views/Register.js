@@ -1,105 +1,144 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import cookie from 'js-cookie';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { register } from 'api/auth';
 import { register as registerAction } from 'actions';
+import AuthTemplate from 'templates/AuthTemplate';
+import routes from 'routes';
 
-class Register extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    errors: {},
-  };
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
-  handleSubmit = (ev) => {
+const Register = (props) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const classes = useStyles();
+
+  const handleSubmit = (ev) => {
     ev.preventDefault();
 
-    const { name, email, password, password_confirmation } = this.state;
+    setLoading(true);
+
     const data = { name, email, password, password_confirmation };
 
-    axios
-      .post('http://laravel-auth.local/api/auth/register', data)
+    register(data)
       .then((res) => {
         const { access_token, user } = res.data;
 
+        setLoading(false);
         cookie.set('token', access_token);
-        this.props.register(user);
-        this.props.history.push('/profile');
+        props.register(user);
+        props.history.push(routes.profile);
       })
-      .catch((err) => this.setState({ errors: err.response.data.errors }));
+      .catch((err) => {
+        setLoading(false);
+        setErrors(err.response.data.errors);
+      });
   };
 
-  handleInput = (ev) => {
-    const { name, value } = ev.target;
-
-    this.setState({ [name]: value });
-  };
-
-  render() {
-    return (
-      <div>
-        <h1>Register page</h1>
-        <div>
-          {this.state.errors['result'] ? this.state.errors['result'] : null}
-        </div>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              onChange={this.handleInput}
-            />
-            <div>
-              {this.state.errors['name'] ? this.state.errors['name'] : null}
-            </div>
-          </div>
-          <div>
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              onChange={this.handleInput}
-            />
-            <div>
-              {this.state.errors['email'] ? this.state.errors['email'] : null}
-            </div>
-          </div>
-          <div>
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              onChange={this.handleInput}
-            />
-            <div>
-              {this.state.errors['password']
-                ? this.state.errors['password']
-                : null}
-            </div>
-          </div>
-          <div>
-            <label>Confirm password</label>
-            <input
-              type="password"
-              name="password_confirmation"
-              placeholder="Confirm password"
-              onChange={this.handleInput}
-            />
-          </div>
-          <div>
-            <button>Register</button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <AuthTemplate>
+      <Avatar className={classes.avatar}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign up
+      </Typography>
+      <form onSubmit={handleSubmit} className={classes.form} noValidate>
+        <TextField
+          error={!!errors['name']}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="name"
+          label="Name"
+          name="name"
+          helperText={!!errors['name'] ? 'Incorrect name.' : ''}
+          autoComplete="name"
+          autoFocus
+          onChange={(ev) => setName(ev.target.value)}
+        />
+        <TextField
+          error={!!errors['email']}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          helperText={!!errors['email'] ? 'Incorrect email.' : ''}
+          autoComplete="email"
+          onChange={(ev) => setEmail(ev.target.value)}
+        />
+        <TextField
+          type="password"
+          error={!!errors['password']}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="password"
+          label="Password"
+          name="password"
+          helperText={!!errors['password'] ? 'Incorrect password.' : ''}
+          autoComplete="password"
+          onChange={(ev) => setPassword(ev.target.value)}
+        />
+        <TextField
+          type="password"
+          error={!!errors['password']}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="password_conrifmation"
+          label="Password conrifmation"
+          name="password_conrifmation"
+          helperText={
+            !!errors['password'] ? 'Incorrect password confirmation.' : ''
+          }
+          autoComplete="password"
+          onChange={(ev) => setPasswordConfirmation(ev.target.value)}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          disabled={loading}
+        >
+          {loading ? 'Signing up...' : 'Sign Up'}
+        </Button>
+      </form>
+      <Link to={routes.login}>Already have an account? Sign in here!</Link>
+    </AuthTemplate>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {

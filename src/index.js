@@ -9,6 +9,8 @@ import { login as loginAction } from 'actions';
 
 import 'index.css';
 
+axios.defaults.baseURL = 'http://laravel-auth.local';
+
 const jwtSecret =
   '4yV9MNxBhFuSLsV7vp5fTMjZiVl0OWKObbaZcXwuGO2TE46Ix707Mys1VocU67Ya';
 let token = cookie.get('token');
@@ -23,7 +25,7 @@ if (token) {
     if (err) {
       clearToken();
     } else {
-      if (decoded.iss !== 'http://laravel-auth.local/api/auth/login') {
+      if (decoded.iss !== `${axios.defaults.baseURL}/api/auth/login`) {
         clearToken();
       }
     }
@@ -36,7 +38,7 @@ const render = () => {
 
 if (token) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  axios.post('http://laravel-auth.local/api/auth/me').then((res) => {
+  axios.post('/api/auth/me').then((res) => {
     store.dispatch(loginAction(res.data));
     render();
   });
