@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -74,6 +75,11 @@ const PanelAppBar = ({ open, handleDrawerOpen }) => {
       </Toolbar>
     </AppBar>
   );
+};
+
+PanelAppBar.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleDrawerOpen: PropTypes.func.isRequired,
 };
 
 export default PanelAppBar;

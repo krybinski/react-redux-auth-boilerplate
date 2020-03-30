@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -105,6 +106,10 @@ const PanelTemplate = ({ children }) => {
       </main>
     </div>
   );
+};
+
+PanelTemplate.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default PanelTemplate;

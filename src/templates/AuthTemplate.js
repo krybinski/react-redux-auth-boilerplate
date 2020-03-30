@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import bgImage from 'assets/images/bg-auth.jpg';
 import Copyright from 'components/Copyright/Copyright';
+import bgImage from 'assets/images/bg-auth.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +47,10 @@ const AuthTemplate = ({ children }) => {
       </Grid>
     </Grid>
   );
+};
+
+AuthTemplate.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default AuthTemplate;

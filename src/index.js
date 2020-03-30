@@ -24,10 +24,8 @@ if (token) {
 
     if (err) {
       clearToken();
-    } else {
-      if (decoded.iss !== `${axios.defaults.baseURL}/api/auth/login`) {
-        clearToken();
-      }
+    } else if (decoded.iss !== `${axios.defaults.baseURL}/api/auth/login`) {
+      clearToken();
     }
   });
 }
@@ -37,7 +35,7 @@ const render = () => {
 };
 
 if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   axios.post('/api/auth/me').then((res) => {
     store.dispatch(loginAction(res.data));
     render();

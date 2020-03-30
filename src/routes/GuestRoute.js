@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import routes from 'routes';
 
-const GuestRoute = ({ component: Component, ...rest }) => {
+const GuestRoute = ({ component: Component, location, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -14,13 +15,24 @@ const GuestRoute = ({ component: Component, ...rest }) => {
           <Redirect
             to={{
               pathname: routes.dashboard,
-              state: { from: props.location },
+              state: { from: location },
             }}
           />
         )
       }
     />
   );
+};
+
+GuestRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    hash: PropTypes.string,
+    state: PropTypes.any,
+    key: PropTypes.string,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => {

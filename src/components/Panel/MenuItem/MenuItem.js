@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -11,6 +12,12 @@ const MenuItem = ({ to, icon, primary, ...rest }) => {
       <ListItemText primary={primary} />
     </ListItem>
   );
+};
+
+MenuItem.propTypes = {
+  to: PropTypes.string.isRequired,
+  icon: PropTypes.element.isRequired,
+  primary: PropTypes.string.isRequired,
 };
 
 export default MenuItem;

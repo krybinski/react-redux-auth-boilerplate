@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import cookie from 'js-cookie';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import routes from 'routes';
-import { connect } from 'react-redux';
 import { logout as logoutAction } from 'actions';
 import MenuItem from 'components/Panel/MenuItem/MenuItem';
 
@@ -36,6 +37,10 @@ const PanelMenuList = (props) => {
       />
     </>
   );
+};
+
+PanelMenuList.propTypes = {
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {

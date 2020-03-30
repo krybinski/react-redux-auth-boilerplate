@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { updateUser } from 'api/user';
@@ -47,7 +48,7 @@ const Profile = (props) => {
             <Title>Profile</Title>
             <form onSubmit={handleSubmit} className={classes.form} noValidate>
               <TextField
-                error={!!errors['name']}
+                error={!!errors.name}
                 variant="outlined"
                 margin="normal"
                 required
@@ -56,13 +57,13 @@ const Profile = (props) => {
                 label="Name"
                 name="name"
                 value={name}
-                helperText={!!errors['name'] ? 'Incorrect name.' : ''}
+                helperText={errors.name ? 'Incorrect name.' : ''}
                 autoComplete="name"
                 autoFocus
                 onChange={(ev) => setName(ev.target.value)}
               />
               <TextField
-                error={!!errors['email']}
+                error={!!errors.email}
                 variant="outlined"
                 margin="normal"
                 required
@@ -71,7 +72,7 @@ const Profile = (props) => {
                 label="Email Address"
                 name="email"
                 value={email}
-                helperText={!!errors['email'] ? 'Incorrect email.' : ''}
+                helperText={errors.email ? 'Incorrect email.' : ''}
                 autoComplete="email"
                 onChange={(ev) => setEmail(ev.target.value)}
               />
@@ -91,6 +92,11 @@ const Profile = (props) => {
       </Grid>
     </PanelTemplate>
   );
+};
+
+Profile.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {

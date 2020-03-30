@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cookie from 'js-cookie';
@@ -44,10 +45,10 @@ const Login = (props) => {
 
     login(data)
       .then((res) => {
-        const { access_token, user } = res.data;
+        const { access_token: token, user } = res.data;
 
         setLoading(false);
-        cookie.set('token', access_token);
+        cookie.set('token', token);
         props.login(user);
         props.history.push(routes.dashboard);
       })
@@ -67,7 +68,7 @@ const Login = (props) => {
       </Typography>
       <form onSubmit={handleSubmit} className={classes.form} noValidate>
         <TextField
-          error={!!errors['email']}
+          error={!!errors.email}
           variant="outlined"
           margin="normal"
           required
@@ -75,14 +76,14 @@ const Login = (props) => {
           id="email"
           label="Email Address"
           name="email"
-          helperText={!!errors['email'] ? 'Incorrect email.' : ''}
+          helperText={errors.email ? 'Incorrect email.' : ''}
           autoComplete="email"
           autoFocus
           onChange={(ev) => setEmail(ev.target.value)}
         />
         <TextField
           type="password"
-          error={!!errors['password']}
+          error={!!errors.password}
           variant="outlined"
           margin="normal"
           required
@@ -90,7 +91,7 @@ const Login = (props) => {
           id="password"
           label="Password"
           name="password"
-          helperText={!!errors['password'] ? 'Incorrect password.' : ''}
+          helperText={errors.password ? 'Incorrect password.' : ''}
           autoComplete="password"
           onChange={(ev) => setPassword(ev.target.value)}
         />
@@ -105,9 +106,18 @@ const Login = (props) => {
           {loading ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
-      <Link to={routes.register}>Don't have an account? Sign up here!</Link>
+      <Link to={routes.register}>
+        Don&apos;t have an account? Sign up here!
+      </Link>
     </AuthTemplate>
   );
+};
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cookie from 'js-cookie';
@@ -31,7 +32,7 @@ const Register = (props) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
@@ -42,14 +43,19 @@ const Register = (props) => {
     setErrors({});
     setLoading(true);
 
-    const data = { name, email, password, password_confirmation };
+    const data = {
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    };
 
     register(data)
       .then((res) => {
-        const { access_token, user } = res.data;
+        const { access_token: token, user } = res.data;
 
         setLoading(false);
-        cookie.set('token', access_token);
+        cookie.set('token', token);
         props.register(user);
         props.history.push(routes.dashboard);
       })
@@ -69,7 +75,7 @@ const Register = (props) => {
       </Typography>
       <form onSubmit={handleSubmit} className={classes.form} noValidate>
         <TextField
-          error={!!errors['name']}
+          error={!!errors.name}
           variant="outlined"
           margin="normal"
           required
@@ -77,13 +83,13 @@ const Register = (props) => {
           id="name"
           label="Name"
           name="name"
-          helperText={!!errors['name'] ? 'Incorrect name.' : ''}
+          helperText={errors.name ? 'Incorrect name.' : ''}
           autoComplete="name"
           autoFocus
           onChange={(ev) => setName(ev.target.value)}
         />
         <TextField
-          error={!!errors['email']}
+          error={!!errors.email}
           variant="outlined"
           margin="normal"
           required
@@ -91,13 +97,13 @@ const Register = (props) => {
           id="email"
           label="Email Address"
           name="email"
-          helperText={!!errors['email'] ? 'Incorrect email.' : ''}
+          helperText={errors.email ? 'Incorrect email.' : ''}
           autoComplete="email"
           onChange={(ev) => setEmail(ev.target.value)}
         />
         <TextField
           type="password"
-          error={!!errors['password']}
+          error={!!errors.password}
           variant="outlined"
           margin="normal"
           required
@@ -105,13 +111,13 @@ const Register = (props) => {
           id="password"
           label="Password"
           name="password"
-          helperText={!!errors['password'] ? 'Incorrect password.' : ''}
+          helperText={errors.password ? 'Incorrect password.' : ''}
           autoComplete="password"
           onChange={(ev) => setPassword(ev.target.value)}
         />
         <TextField
           type="password"
-          error={!!errors['password']}
+          error={!!errors.password}
           variant="outlined"
           margin="normal"
           required
@@ -119,9 +125,7 @@ const Register = (props) => {
           id="password_conrifmation"
           label="Password conrifmation"
           name="password_conrifmation"
-          helperText={
-            !!errors['password'] ? 'Incorrect password confirmation.' : ''
-          }
+          helperText={errors.password ? 'Incorrect password confirmation.' : ''}
           autoComplete="password"
           onChange={(ev) => setPasswordConfirmation(ev.target.value)}
         />
@@ -139,6 +143,13 @@ const Register = (props) => {
       <Link to={routes.login}>Already have an account? Sign in here!</Link>
     </AuthTemplate>
   );
+};
+
+Register.propTypes = {
+  register: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {

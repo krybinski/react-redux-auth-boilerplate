@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const AuthRoute = ({ component: Component, ...rest }) => {
+const AuthRoute = ({ component: Component, location, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -13,13 +14,24 @@ const AuthRoute = ({ component: Component, ...rest }) => {
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: props.location },
+              state: { from: location },
             }}
           />
         )
       }
     />
   );
+};
+
+AuthRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    hash: PropTypes.string,
+    state: PropTypes.any,
+    key: PropTypes.string,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => {
