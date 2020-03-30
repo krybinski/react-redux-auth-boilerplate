@@ -29,13 +29,13 @@ const Routing = () => (
 const Root = () => {
   return (
     <Provider store={store}>
-      <React.StrictMode>
-        <BrowserRouter>
-          <MainTemplate>
-            <Routing />
-          </MainTemplate>
-        </BrowserRouter>
-      </React.StrictMode>
+      {/* <React.StrictMode> */}
+      <BrowserRouter>
+        <MainTemplate>
+          <Routing />
+        </MainTemplate>
+      </BrowserRouter>
+      {/* </React.StrictMode> */}
     </Provider>
   );
 };

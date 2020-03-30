@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import cookie from 'js-cookie';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { logout as logoutAction } from 'actions';
 
 const drawerWidth = 240;
 
@@ -42,8 +45,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PanelAppBar = ({ open, handleDrawerOpen }) => {
+const PanelAppBar = ({ open, handleDrawerOpen, logout }) => {
   const classes = useStyles();
+
+  const handleLogout = (ev) => {
+    ev.preventDefault();
+
+    cookie.remove('token');
+    logout();
+  };
 
   return (
     <AppBar
@@ -67,11 +77,11 @@ const PanelAppBar = ({ open, handleDrawerOpen }) => {
           noWrap
           className={classes.title}
         />
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
+        <Tooltip title="Logout">
+          <IconButton color="inherit" onClick={handleLogout}>
+            <ExitToAppIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );
@@ -80,6 +90,19 @@ const PanelAppBar = ({ open, handleDrawerOpen }) => {
 PanelAppBar.propTypes = {
   open: PropTypes.bool.isRequired,
   handleDrawerOpen: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
-export default PanelAppBar;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.auth.loggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logoutAction()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PanelAppBar);
